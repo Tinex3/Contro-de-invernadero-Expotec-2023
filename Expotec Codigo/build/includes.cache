@@ -1,0 +1,62 @@
+[
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\briqu\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino"
+  },
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\briqu\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\eightanaloginputs"
+  },
+  {
+    "Sourcefile": "E:\\GitHub\\Expotec-2023\\Expotec Codigo\\build\\sketch\\Expotec Codigo.ino.cpp",
+    "Include": "DHT.h",
+    "Includepath": "C:\\Users\\briqu\\OneDrive\\Documentos\\Arduino\\libraries\\DHT_sensor_library"
+  },
+  {
+    "Sourcefile": "E:\\GitHub\\Expotec-2023\\Expotec Codigo\\build\\sketch\\Expotec Codigo.ino.cpp",
+    "Include": "OneWire.h",
+    "Includepath": "C:\\Users\\briqu\\OneDrive\\Documentos\\Arduino\\libraries\\OneWire"
+  },
+  {
+    "Sourcefile": "E:\\GitHub\\Expotec-2023\\Expotec Codigo\\build\\sketch\\Expotec Codigo.ino.cpp",
+    "Include": "DallasTemperature.h",
+    "Includepath": "C:\\Users\\briqu\\OneDrive\\Documentos\\Arduino\\libraries\\DallasTemperature"
+  },
+  {
+    "Sourcefile": "E:\\GitHub\\Expotec-2023\\Expotec Codigo\\build\\sketch\\Expotec Codigo.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\briqu\\OneDrive\\Documentos\\Arduino\\libraries\\DHT_sensor_library\\DHT.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\briqu\\OneDrive\\Documentos\\Arduino\\libraries\\DHT_sensor_library\\DHT_U.cpp",
+    "Include": "Adafruit_Sensor.h",
+    "Includepath": "C:\\Users\\briqu\\OneDrive\\Documentos\\Arduino\\libraries\\Adafruit_Unified_Sensor"
+  },
+  {
+    "Sourcefile": "C:\\Users\\briqu\\OneDrive\\Documentos\\Arduino\\libraries\\DHT_sensor_library\\DHT_U.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\briqu\\OneDrive\\Documentos\\Arduino\\libraries\\OneWire\\OneWire.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\briqu\\OneDrive\\Documentos\\Arduino\\libraries\\DallasTemperature\\DallasTemperature.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\briqu\\OneDrive\\Documentos\\Arduino\\libraries\\Adafruit_Unified_Sensor\\Adafruit_Sensor.cpp",
+    "Include": "",
+    "Includepath": null
+  }
+]
