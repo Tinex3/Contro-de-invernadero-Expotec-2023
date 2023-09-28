@@ -10,6 +10,7 @@
             "includePath": [
                 "E:/GitHub/Expotec-2023/Expotec Codigo/include",
                 "E:/GitHub/Expotec-2023/Expotec Codigo/src",
+                "E:/GitHub/Expotec-2023/Expotec Codigo/lib/llamado-a-cosas",
                 "E:/GitHub/Expotec-2023/Expotec Codigo/.pio/libdeps/nanoatmega328new/DallasTemperature",
                 "E:/GitHub/Expotec-2023/Expotec Codigo/.pio/libdeps/nanoatmega328new/OneWire",
                 "E:/GitHub/Expotec-2023/Expotec Codigo/.pio/libdeps/nanoatmega328new/DHT sensor library",
@@ -28,6 +29,7 @@
                 "path": [
                     "E:/GitHub/Expotec-2023/Expotec Codigo/include",
                     "E:/GitHub/Expotec-2023/Expotec Codigo/src",
+                    "E:/GitHub/Expotec-2023/Expotec Codigo/lib/llamado-a-cosas",
                     "E:/GitHub/Expotec-2023/Expotec Codigo/.pio/libdeps/nanoatmega328new/DallasTemperature",
                     "E:/GitHub/Expotec-2023/Expotec Codigo/.pio/libdeps/nanoatmega328new/OneWire",
                     "E:/GitHub/Expotec-2023/Expotec Codigo/.pio/libdeps/nanoatmega328new/DHT sensor library",

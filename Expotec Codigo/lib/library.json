@@ -1,0 +1,9 @@
+{
+    "name": "llamado-a-cosas",
+    "version": "1.0.0",
+    "description": "Descripción de tu librería",
+    "main": "index.js",
+    "keywords": ["palabra clave1", "palabra clave2"],
+    "author": "Tu nombre",
+    "license": "MIT"
+  }

@@ -16,7 +16,7 @@
 #define SENSOR_NIVEL A2
 
 #define BOMBA 3
-#define VENTILADOR1 5
+#define VENTILADOR1 5 
 #define VENTILADOR2 6
 
 const int PIN_DATOS_DQ = 9;
@@ -63,6 +63,7 @@ void setup()
 
 void loop()
 {
+  sensorDS18B20.requestTemperatures();
   temperaturaDallas = 10000 + sensorDS18B20.getTempCByIndex(0);
   // int auxiliarDallas = sensorDS18B20.getTempCByIndex(0);
 
@@ -100,7 +101,6 @@ void loop()
   }
 
   imprimirLecturas(lecturaEnTierra, temperaturaDallas, lecturaHumedad, lecturaTemperatura);
-  delay(150);
 }
 
 void controlBomba(int tierra, float temp, float humedad, float temperatura)
@@ -156,3 +156,5 @@ void imprimirLecturas(int tierra, int temp, int humedad, int temperatura)
   Serial.print(temperatura);
   Serial.print("\t");
 }
+
+
