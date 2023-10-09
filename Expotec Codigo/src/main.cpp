@@ -1,160 +1,137 @@
 #include <Arduino.h>
 #include <DHT.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
 
 #define DHTPIN 2
 #define DHTTYPE DHT11
 
 #define BAUDIOS 115200
-#define TEMPERATURA_CRITICA 35
-#define HUMEDAD_CRITICA_DIGITAL 25
-#define HUMEDAD_CRITICA_ANALOGICA 450
+#define TIEMPO_ACCION 5000 // Tiempo de ejecución de la acción en milisegundos (por ejemplo, 5 segundos)
+#define INTERVALO_LECTURA 500 // Intervalo de lectura en milisegundos (150 ms en este caso)
 
 #define LM35 A0
 #define EN_TIERRA A1
-#define SENSOR_NIVEL A2
+
 
 #define BOMBA 3
-#define VENTILADOR1 5 
-#define VENTILADOR2 6
-
-const int PIN_DATOS_DQ = 9;
-
-bool EstadoBooleanoCriticoHumedadTemperaturaDigital, EstadoBooleanoCriticoHumedadTemperaturaAnalogico;
+#define VENTILADOR1 4
+#define VENTILADOR2 5
 
 DHT dht(DHTPIN, DHTTYPE);
-OneWire oneWireObjeto(PIN_DATOS_DQ);
-DallasTemperature sensorDS18B20(&oneWireObjeto);
 
-int temperaturaDallas;
-// int auxiliarDallas = sensorDS18B20.getTempCByIndex(0);
+enum Estado {
+    ESPERANDO_COMANDO,
+    EJECUTANDO_ACCION
+};
 
-int lecturaEnTierra;
-// int AuxiliarEntierra = analogRead(EN_TIERRA);
+Estado estado = ESPERANDO_COMANDO;
+unsigned long tiempoInicioAccion = 0;
+unsigned long tiempoUltimaLectura = 0;
 
-int lecturaHumedad;
-// int AuxiliarHumedad = dht.readHumidity();
+void lecturadedatos();
+void ejecutarComando(char comando);
+void activarBomba();
+void activarVentilador1();
+void activarVentilador2();
+void detenerSalidas();
 
-int lecturaTemperatura;
-int auxentierra;
 
-
-void controlBomba(int tierra, float temp, float humedad, float temperatura);
-void controlVentilador1(int tierra, float temp, float humedad, float temperatura);
-void controlBombaVentiladores(int tierra, float temp, float humedad, float temperatura);
-void imprimirLecturas(int tierra, int temp, int humedad, int temperatura);
-void controlVentilador2(int tierra, float temp, float humedad, float temperatura);
-
-void setup()
-{
-  Serial.begin(BAUDIOS);
-  dht.begin();
-  sensorDS18B20.begin();
-
-  pinMode(LM35, INPUT);
-  pinMode(EN_TIERRA, INPUT);
-  pinMode(SENSOR_NIVEL, INPUT);
-
-  pinMode(BOMBA, OUTPUT);
-  pinMode(VENTILADOR1, OUTPUT);
-  pinMode(VENTILADOR2, OUTPUT);
+void setup() {
+    Serial.begin(BAUDIOS);
+    dht.begin();
+    pinMode(LM35, INPUT);
+    pinMode(EN_TIERRA, INPUT);
+    pinMode(BOMBA, OUTPUT);
+    pinMode(VENTILADOR1, OUTPUT);
+    pinMode(VENTILADOR2, OUTPUT);
 }
 
-void loop()
-{
-  sensorDS18B20.requestTemperatures();
-  temperaturaDallas = 10000 + sensorDS18B20.getTempCByIndex(0);
-  // int auxiliarDallas = sensorDS18B20.getTempCByIndex(0);
+void loop() {
+    unsigned long tiempoActual = millis();
 
-  lecturaEnTierra = 10000 + analogRead(EN_TIERRA);
-
-  
-  // int AuxiliarEntierra = analogRead(EN_TIERRA);
-
-  lecturaHumedad = 10000 + dht.readHumidity();
-  // int AuxiliarHumedad = dht.readHumidity();
-
-  lecturaTemperatura = 10000 + dht.readTemperature();
-  // int AuxiliarTemperatura = dht.readTemperature();
-
-  imprimirLecturas(lecturaEnTierra, temperaturaDallas, lecturaHumedad, lecturaTemperatura);
-
-  if (Serial.available())
-  {
-    char var = Serial.read();
-    switch (var)
-    {
-    case 'A':
-      controlBomba(lecturaEnTierra, temperaturaDallas, lecturaHumedad, lecturaTemperatura);
-      break;
-    case 'B':
-      controlVentilador1(lecturaEnTierra, temperaturaDallas, lecturaHumedad, lecturaTemperatura);
-      break;
-    case 'C':
-      controlVentilador2(lecturaEnTierra, temperaturaDallas, lecturaHumedad, lecturaTemperatura);
-      break;
-    case 'D':
-      controlBombaVentiladores(lecturaEnTierra, temperaturaDallas, lecturaHumedad, lecturaTemperatura);
-      break;
+    // Realizar lectura y enviar datos cada 150 ms
+    if (tiempoActual - tiempoUltimaLectura >= INTERVALO_LECTURA) {
+        lecturadedatos();
+        tiempoUltimaLectura = tiempoActual;
     }
-  }
 
-  imprimirLecturas(lecturaEnTierra, temperaturaDallas, lecturaHumedad, lecturaTemperatura);
+    switch (estado) {
+        case ESPERANDO_COMANDO:
+            if (Serial.available()) {
+                char var = Serial.read();
+                ejecutarComando(var);
+            }
+            break;
+        case EJECUTANDO_ACCION:
+            if (millis() - tiempoInicioAccion >= TIEMPO_ACCION) {
+                detenerSalidas();
+                estado = ESPERANDO_COMANDO;
+            }
+            break;
+    }
 }
 
-void controlBomba(int tierra, float temp, float humedad, float temperatura)
-{
-  // Lógica para controlar la bomba
-  digitalWrite(BOMBA, HIGH);
-  delay(1000);
-  digitalWrite(BOMBA, LOW);
-  delay(10);
+void ejecutarComando(char comando) {
+    switch (comando) {
+        case 'A':
+            activarBomba();
+            break;
+        case 'B':
+            activarVentilador1();
+            break;
+        case 'C':
+            activarVentilador2();
+            break;
+        case 'D':
+            activarBomba();
+            activarVentilador1();
+            activarVentilador2();
+            break;
+        // Agrega más casos de comandos si es necesario
+    }
 }
 
-void controlVentilador1(int tierra, float temp, float humedad, float temperatura)
-{
-  // Lógica para controlar el ventilador 1
-  digitalWrite(VENTILADOR1, HIGH);
-  delay(1000);
-  digitalWrite(VENTILADOR1, LOW);
-  delay(10);
+void activarBomba() {
+    digitalWrite(BOMBA, HIGH);
+    tiempoInicioAccion = millis();
+    estado = EJECUTANDO_ACCION;
 }
 
-void controlVentilador2(int tierra, float temp, float humedad, float temperatura)
-{
-  // Lógica para controlar el ventilador 2
-  digitalWrite(VENTILADOR2, HIGH);
-  delay(1000);
-  digitalWrite(VENTILADOR2, LOW);
-  delay(10);
+void activarVentilador1() {
+    digitalWrite(VENTILADOR1, HIGH);
+    tiempoInicioAccion = millis();
+    estado = EJECUTANDO_ACCION;
 }
 
-void controlBombaVentiladores(int tierra, float temp, float humedad, float temperatura)
-{
-  // Lógica para controlar la bomba y los ventiladores
-  digitalWrite(BOMBA, HIGH);
-  digitalWrite(VENTILADOR1, HIGH);
-  digitalWrite(VENTILADOR2, HIGH);
-  delay(1000);
-  digitalWrite(BOMBA, LOW);
-  digitalWrite(VENTILADOR1, LOW);
-  digitalWrite(VENTILADOR2, LOW);
-  delay(10);
+void activarVentilador2() {
+    digitalWrite(VENTILADOR2, HIGH);
+    tiempoInicioAccion = millis();
+    estado = EJECUTANDO_ACCION;
 }
 
-// Agrega más funciones de control según sea necesario
-
-void imprimirLecturas(int tierra, int temp, int humedad, int temperatura)
-{
-  Serial.print(tierra);
-  Serial.print("\t");
-  Serial.print(temp);
-  Serial.print("\t");
-  Serial.print(humedad);
-  Serial.print("\t");
-  Serial.print(temperatura);
-  Serial.print("\t");
+void detenerSalidas() {
+    digitalWrite(BOMBA, LOW);
+    digitalWrite(VENTILADOR1, LOW);
+    digitalWrite(VENTILADOR2, LOW);
 }
 
+void lecturadedatos() {
+    // Lógica para leer datos de los sensores y enviarlos por el puerto serie
+    int valorLM35 = analogRead(LM35);
+    int temperaturaLM35 = 10000+((5*valorLM35*100)/1024); // Convertir el valor a temperatura en grados Celsius
 
+    int valorTierra = 10000+analogRead(EN_TIERRA);
+
+    int humedad = 10000+dht.readHumidity();
+    int temperaturaDHT = 10000+dht.readTemperature();
+
+    // Enviar datos por Serial (puedes modificar este formato según tus necesidades)
+    Serial.print(valorTierra);
+    Serial.print("\t");
+    Serial.print(temperaturaLM35);
+    Serial.print("\t");
+    Serial.print(humedad);
+    Serial.print("\t");
+    Serial.print(temperaturaDHT);
+    Serial.print("\t"); 
+    
+}
