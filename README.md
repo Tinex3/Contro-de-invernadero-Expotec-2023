@@ -4,13 +4,13 @@
 
 ## Descripción
 
-Este proyecto es un sistema de control de invernadero basado en control On-off. Utiliza tecnologías como LabVIEW 2013 y Arduino Firmware para proporcionar un control eficiente de las condiciones ambientales dentro del invernadero. La comunicación entre LabVIEW y Arduino se realiza a través de un puerto serial. Los valores de temperatura se pueden ajustar directamente en el código CPP.
+Este proyecto es un sistema de control de invernadero basado en control On-off. Utiliza tecnologías como LabVIEW 2013 y Arduino Firmware para proporcionar un control eficiente de las condiciones ambientales dentro del invernadero. La comunicación entre LabVIEW y Arduino se realiza a través de un puerto serial. Los valores de temperatura se pueden ajustar directamente en el código C++.
 
 ## Características Clave
 
 - Control de temperatura y humedad en tiempo real.
 - Interfaz de usuario amigable diseñada con LabVIEW 2013.
-- Integración con sensores, incluyendo el sensor Dallas 18B20, DHT11 y el sensor de humedad YI-38, para un control preciso.
+- Integración con sensores, incluyendo el sensor LM35DZ, DHT11 y el sensor de humedad YI-38, para un control preciso.
 - Configuración personalizada de umbrales y alarmas a través del código de arduino.
 - Control de dispositivos, como bomba y ventiladores, para mantener las condiciones ideales.
 
@@ -20,7 +20,7 @@ Para ejecutar este proyecto, necesitas:
 
 - LabVIEW 2013.
 - Arduino IDE (versión X.X.X)
-- Hardware compatible con Arduino (sensores Dallas 18B20, DHT11, sensor de humedad YI-38, sensores adicionales).
+- Hardware compatible con Arduino (sensores lm35DZ, DHT11 y sensor de humedad YI-38).
 - Conexión física entre tu computadora y el Arduino a través de un puerto serial.
 - NI Visa (versión 5.3) para la comunicación con LabVIEW.
 
