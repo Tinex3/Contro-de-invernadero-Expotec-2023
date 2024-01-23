@@ -11,11 +11,11 @@
 
 
 typedef struct Controldeinvernadero{
-    uint16_t LM35;
-    uint16_t Lectura_En_Tierra;
-    uint16_t BOMBA;
-    uint16_t VENTILADOR1;
-    uint16_t VENTILADOR2;
+    uint16_t LM35 = A0;
+    uint16_t Lectura_En_Tierra = A1;
+    uint16_t BOMBA = 3;
+    uint16_t VENTILADOR1 = 4;
+    uint16_t VENTILADOR2 =5;
 }Control_Agua;
 Control_Agua Maqueta;
 
